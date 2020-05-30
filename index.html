@@ -9,12 +9,12 @@
 
 <body>
   <div id="主体">
-    <div id="标题">化学式配平器 v1.0</div>
+    <div id="标题">化学式配平器 v2.0</div>
     <div id="主题">
-      <!--<span>请输入未配平的化学式: 如 H2+O2=H2O</span>-->
-      <span>小小韩批~ 啦啦啦</span>
+      <span>请输入反应物与生成物,如:&nbsp;&nbsp;CaO H2O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ca(OH)2</span>
       <br>
-      <input></input>
+      <input id="input1" placeholder="反应物 （请用空格分开）"></input>
+      <input id="input2" placeholder="生成物 （请用空格分开）"></input>
       <button onclick="配平()">配平</button>
     </div>
     <hr>
@@ -26,23 +26,23 @@
 
 
 <script>
-  var c = "";
-  var n = 0, a = 0, l = 0, z = 0;
+  var c1 = "",c2="";
+  var n = 0, a = 0, l1 = 0,l2 = 0, z = 0;
   var N = 0, K = 0;
   var Name = new Array();
   var t = new Array();
   var m = new Array();
   var ans = new Array();
   var Ans = new Array();
-  for (let i = 0; i <= 50; i++) {
+  for (let i = 0; i <= 80; i++) {
     Name[i] = "";
   }
-  for (let i = 0; i <= 50; i++) {
+  for (let i = 0; i <= 80; i++) {
     t[i] = "";
   }
-  for (let i = 0; i <= 50; i++) {
+  for (let i = 0; i <= 80; i++) {
     m[i] = new Array();
-    for (let j = 0; j <= 50; j++) {
+    for (let j = 0; j <= 80; j++) {
       m[i][j] = new frac();
     }
   }
@@ -151,22 +151,37 @@
   }
 
   function 配平() {
-    c = $('input').value
-    l = c.length;
+    c1 = $("#input1").value
+    c2 = $("#input2").value
+    l1 = c1.length;
+    l2 = c2.length;
     var Leg = 1;
     var has = 0;
-    for (let i = 0; i < l; i++) if ('A' <= c[i] && c[i] <= 'Z') has = 1;
+    for (let i = 0; i < l1; i++) if ('A' <= c1[i] && c1[i] <= 'Z') has = 1;
+    for (let i = 0; i < l2; i++) if ('A' <= c2[i] && c2[i] <= 'Z') has = 1;
     var last = 0;
-    for (let p = 0; p < l; p++) {
-      if (c[p] == '+' || c[p] == '=') {
+    for (let p = 0; p < l1; p++) {
+      if (c1[p] == ' ') {
         n++;
-        if (c[p] == '=') z = n;
-        for (let i = 0; i < p - last; i++) Name[n] += c[i + last];
+        for (let i = 0; i < p - last; i++) Name[n] += c1[i + last];
         last = p + 1;
       }
-      if (p == l - 1) {
+      if (p == l1 - 1) {
         n++;
-        for (let i = 0; i <= p - last; i++) Name[n] += c[i + last];
+        z=n;
+        for (let i = 0; i <= p - last; i++) Name[n] += c1[i + last];
+      }
+    }
+    last = 0;
+    for (let p = 0; p < l2; p++) {
+      if (c2[p] == ' ') {
+        n++;
+        for (let i = 0; i < p - last; i++) Name[n] += c2[i + last];
+        last = p + 1;
+      }
+      if (p == l2 - 1) {
+        n++;
+        for (let i = 0; i <= p - last; i++) Name[n] += c2[i + last];
       }
     }
     for (let x = 1; x <= n; x++) {
